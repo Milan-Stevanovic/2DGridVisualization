@@ -1,0 +1,71 @@
+﻿<Window x:Class="_2DGridVisualization.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2DGridVisualization"
+        mc:Ignorable="d"
+        Title="2D Grid Visualization"
+        Height="600"
+        MinHeight="600"
+        Width="1000"
+        MinWidth="1000"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT COLUMN  -->
+        <Grid Grid.Column="0" Background="#202020" Panel.ZIndex="1">
+            <!-- CANVAS -->
+            <Line X1="10" Y1="20" X2="100" Y2="20" Stroke="#404040" StrokeThickness="2"/>
+            <TextBlock Text="Canvas" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0, 10, 0, 0"/>
+            <Line X1="150" Y1="20" X2="240" Y2="20" Stroke="#404040" StrokeThickness="2"/>
+
+            <TextBlock Text="Width:" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,31,0,0"/>
+            <TextBox x:Name="txtCanvasWidth" HorizontalAlignment="Left" Height="17" Margin="58,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" TextChanged="txtCanvasWidth_TextChanged"/>
+            <TextBlock Text="pixels" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="210,31,0,0"/>
+
+            <TextBlock Text="Height:" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,52,0,0"/>
+            <TextBlock x:Name="txtCanvasHeight" Foreground="White" HorizontalAlignment="Left" Height="17" Margin="58,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142"/>
+            <TextBlock Text="pixels" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="210,52,0,0"/>
+            <Button x:Name="btnSetCanvasSize" Content="Set Size" Margin="10,76,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="230" Click="btnSetCanvasSize_Click"/>
+
+            <!-- LOAD GRID -->
+            <Line X1="10" Y1="130" X2="105" Y2="130" Stroke="#404040" StrokeThickness="2"/>
+            <TextBlock Text="Grid" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0, 120, 0, 0"/>
+            <Line X1="145" Y1="130" X2="240" Y2="130" Stroke="#404040" StrokeThickness="2"/>
+            <Button x:Name="btnLoadGrid" Content="Load Grid" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top" Width="230" Click="btnLoadGrid_Click"/>
+            <Button x:Name="btnDrawGrid" Content="Draw Grid" HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top" Width="230" Click="btnDrawGrid_Click"/>
+
+
+            <!-- UNDO REDO CLEAR -->
+
+
+            <!-- SHOW HIDE NODES -->
+        </Grid>
+
+        <Grid Grid.Column="1" Background="#131313">
+            <Grid Panel.ZIndex="1">
+                <TextBlock Text="30%" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
+                <Slider x:Name="sliderZoom" Minimum="0.3" Maximum="5" Value="1" VerticalAlignment="Top" Margin="50, 10, 50, 0" Background="Transparent"/>
+                <TextBlock Text="500%" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10"/>
+            </Grid>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Canvas x:Name="mainCanvas" Background="#303030" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Canvas.LayoutTransform>
+                        <ScaleTransform ScaleX="{Binding ElementName=sliderZoom, Path=Value}"
+                                        ScaleY="{Binding ElementName=sliderZoom, Path=Value}"/>
+                    </Canvas.LayoutTransform>
+                </Canvas>
+            </ScrollViewer>
+            <Label x:Name="lblMatrixSize" Foreground="Gray" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,15"/>
+            <Label x:Name="lblCanvasSize" Foreground="Gray" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        </Grid>
+    </Grid>
+
+</Window>
