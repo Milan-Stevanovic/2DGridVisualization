@@ -553,5 +553,29 @@ namespace _2DGridVisualization
                 }
             }
         }
+
+        private void btnScreenshot_Click(object sender, RoutedEventArgs e)
+        {
+            if((int)mainCanvas.ActualWidth > 0 && (int)mainCanvas.ActualHeight > 0)
+            {
+                RenderTargetBitmap rtb = new RenderTargetBitmap((int)mainCanvas.ActualWidth, (int)mainCanvas.ActualHeight, 96.0, 96.0, PixelFormats.Default);
+                rtb.Render(mainCanvas);
+
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(rtb));
+
+
+                string filename = DateTime.Now.ToString("dd-M-yyyy_HH.mm.ss.ff") + ".jpg";
+
+                System.IO.FileStream stream = System.IO.File.Create(filename);
+                encoder.Save(stream);
+                stream.Close();
+                MessageBox.Show($"Screenshot \'{filename}\' saved!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Set canvas size first", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

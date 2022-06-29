@@ -11,7 +11,8 @@
         Width="1200"
         MinWidth="1200"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResize">
+        ResizeMode="CanResize"
+        WindowState="Maximized">
 
     <Grid >
         <Grid.ColumnDefinitions>
@@ -59,6 +60,12 @@
             <Button x:Name="btnDrawEllipse" Content="Ellipse" HorizontalAlignment="Left" Margin="10,341,0,0" VerticalAlignment="Top" Width="230" Click="btnDrawEllipse_Click"/>
             <Button x:Name="btnDrawPolygon" Content="Polygon" HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Width="230" Click="btnDrawPolygon_Click"/>
             <Button x:Name="btnAddText" Content="Add Text" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" Width="230" Click="btnAddText_Click"/>
+
+            <!-- Image -->
+            <Line X1="10" Y1="450" X2="100" Y2="450" Stroke="#404040" StrokeThickness="2"/>
+            <TextBlock Text="Image" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,440,0,0" RenderTransformOrigin="0.513,0.917"/>
+            <Line X1="150" Y1="450" X2="240" Y2="450" Stroke="#404040" StrokeThickness="2"/>
+            <Button x:Name="btnScreenshot" Content="Screenshot Canvas" HorizontalAlignment="Left" Margin="10,461,0,0" VerticalAlignment="Top" Width="230" Click="btnScreenshot_Click"/>
 
 
             <!-- TIMER -->
