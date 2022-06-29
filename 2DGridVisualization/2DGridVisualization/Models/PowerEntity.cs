@@ -14,8 +14,8 @@ namespace _2DGridVisualization.Models
         private double utmY;
         private double longitude;
         private double latitude;
-        private double matrixRow;
-        private double matrixCol;
+        private int matrixRow;
+        private int matrixCol;
 
 
         public PowerEntity() { }
@@ -56,13 +56,13 @@ namespace _2DGridVisualization.Models
             set { latitude = value; }
         }
 
-        public double MatrixRow
+        public int MatrixRow
         {
             get { return matrixRow; }
             set { matrixRow = value; }
         }
 
-        public double MatrixCol
+        public int MatrixCol
         {
             get { return matrixCol; }
             set { matrixCol = value; }

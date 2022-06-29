@@ -25,8 +25,8 @@ namespace _2DGridVisualization
         {
             for (int i = 0; i < Data.allEntities.Count; i++)
             {
-                Data.allEntities.ElementAt(i).Value.MatrixRow = Data.matrixRows - (Data.matrixRows * (Data.allEntities.ElementAt(i).Value.Latitude - Data.minLatitude) / (Data.maxLatitude - Data.minLatitude));
-                Data.allEntities.ElementAt(i).Value.MatrixCol = Data.matrixCols * (Data.allEntities.ElementAt(i).Value.Longitude - Data.minLongitude) / (Data.maxLongitude - Data.minLongitude);
+                Data.allEntities.ElementAt(i).Value.MatrixRow = (int)(Data.matrixRows - (Data.matrixRows * (Data.allEntities.ElementAt(i).Value.Latitude - Data.minLatitude) / (Data.maxLatitude - Data.minLatitude)));
+                Data.allEntities.ElementAt(i).Value.MatrixCol = (int)(Data.matrixCols * (Data.allEntities.ElementAt(i).Value.Longitude - Data.minLongitude) / (Data.maxLongitude - Data.minLongitude));
             }
         }
 
@@ -50,6 +50,17 @@ namespace _2DGridVisualization
                 }
             }
             return false; // Not found
+        }
+
+        public static void SetLinesStartAndEnd()
+        {
+            foreach (LineEntity line in Data.lines.Values)
+            {
+                line.StartMatrixCol = Data.allEntities[line.FirstEnd].MatrixCol;
+                line.StartMatrixRow = Data.allEntities[line.FirstEnd].MatrixRow;
+                line.EndMatrixCol = Data.allEntities[line.SecondEnd].MatrixCol;
+                line.EndMatrixRow = Data.allEntities[line.SecondEnd].MatrixRow;
+            }
         }
     }
 }

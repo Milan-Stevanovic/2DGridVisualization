@@ -104,11 +104,34 @@ namespace _2DGridVisualization
             Data.minLatitude = Data.allEntities.Min(x => x.Value.Latitude);
             Data.maxLatitude = Data.allEntities.Max(x => x.Value.Latitude);
 
-        
+
 
 
             // Loading Lines
-            // ...
+            LineEntity l = new LineEntity();
+
+            nodeList = xmlDoc.DocumentElement.SelectNodes("/NetworkModel/Lines/LineEntity");
+            foreach (XmlNode node in nodeList)
+            {
+                l.Id = long.Parse(node.SelectSingleNode("Id").InnerText);
+                l.Name = node.SelectSingleNode("Name").InnerText;
+                l.FirstEnd = long.Parse(node.SelectSingleNode("FirstEnd").InnerText);
+                l.SecondEnd = long.Parse(node.SelectSingleNode("SecondEnd").InnerText);
+
+                if (Data.allEntities.ContainsKey(l.FirstEnd) && Data.allEntities.ContainsKey(l.SecondEnd))
+                {
+                    Data.lines.Add(l.Id, 
+                        new LineEntity
+                        {
+                            Id = l.Id,
+                            Name = l.Name,
+                            FirstEnd = l.FirstEnd,
+                            SecondEnd = l.SecondEnd,
+                            IsDrawn = false
+                        }
+                    );
+                }
+            }
         }
 
         //From UTM to Latitude and longitude in decimal

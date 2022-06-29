@@ -27,7 +27,7 @@ namespace _2DGridVisualization
         public static PowerEntity[,] matrix;
 
         public static Dictionary<long, PowerEntity> allEntities = new Dictionary<long, PowerEntity>();
-
+        public static Dictionary<long, LineEntity> lines = new Dictionary<long, LineEntity>();
 
         public static double minLongitude;
         public static double maxLongitude;

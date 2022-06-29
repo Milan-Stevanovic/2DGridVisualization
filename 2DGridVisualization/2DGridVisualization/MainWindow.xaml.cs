@@ -1,6 +1,7 @@
 ﻿using _2DGridVisualization.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,7 @@ namespace _2DGridVisualization
         public MainWindow()
         {
             InitializeComponent();
+            btnDrawGrid.IsEnabled = false;
             lblCanvasSize.Content = $"{mainCanvas.Width} X {mainCanvas.Height} px";
         }
 
@@ -49,6 +51,7 @@ namespace _2DGridVisualization
             lblCanvasSize.Content = $"{mainCanvas.Width} X {mainCanvas.Height} px";
 
             mainCanvas.Children.Clear();
+            btnDrawGrid.IsEnabled = true;
         }
 
         private void txtCanvasWidth_TextChanged(object sender, TextChangedEventArgs e)
@@ -68,9 +71,17 @@ namespace _2DGridVisualization
 
         private void btnDrawGrid_Click(object sender, RoutedEventArgs e)
         {
+            if (Data.matrix == null || Data.allEntities.Count() == 0)
+            {
+                MessageBox.Show("You must set size and load entities before drawing!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Clear canvas and recalculate positions
             mainCanvas.Children.Clear();
 
             Scale.ScaleToCanvas();
+            Scale.SetLinesStartAndEnd();
 
             foreach (PowerEntity powerEntity in Data.allEntities.Values)
             {
@@ -78,14 +89,13 @@ namespace _2DGridVisualization
                 int step = 0;
                 while (!found)
                 {
-                    found = Scale.CheckField(powerEntity, (int)Math.Floor(powerEntity.MatrixRow), (int)Math.Floor(powerEntity.MatrixCol), step);
+                    found = Scale.CheckField(powerEntity, (int)powerEntity.MatrixRow, (int)powerEntity.MatrixCol, step);
                     step++;
                 }
             }
 
 
-            int drawnEntities = 0;
-
+            // Drawing Entities
             for (int row = 0; row < Data.matrixRows; row++)
             {
                 for (int col = 0; col < Data.matrixCols; col++)
@@ -93,11 +103,26 @@ namespace _2DGridVisualization
                     if (Data.matrix[row, col] != null)
                     {
                         DrawEntity(row, col);
-                        drawnEntities++;
                     }
                 }
             }
-            Console.WriteLine("Entities drawn on canvas = " + drawnEntities);
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            // Drawing Lines
+
+            stopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = stopWatch.Elapsed;
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            txtTimes.Text += String.Format("{0, -15} | {1, -10} | {2}\n", $"{mainCanvas.Width} X {mainCanvas.Height} px", $"{Data.matrixCols} X {Data.matrixRows}", elapsedTime);
+
+
+            btnDrawGrid.IsEnabled = false;
         }
 
         private void DrawEntity(int row, int col)
