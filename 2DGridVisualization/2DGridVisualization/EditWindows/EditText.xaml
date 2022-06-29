@@ -1,0 +1,27 @@
+﻿<Window x:Class="_2DGridVisualization.EditWindows.EditText"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2DGridVisualization.EditWindows"
+        mc:Ignorable="d"
+        Title="Edit Text" Height="150" Width="235"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <StackPanel Orientation="Vertical" Background="#4A4A4A">
+        <Label Content="Text" Foreground="White" HorizontalContentAlignment="Center"/>
+
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <Label Content="Text Color = " Foreground="White" HorizontalContentAlignment="Right"/>
+                <Label Content="Font Size = " Foreground="White" HorizontalContentAlignment="Right"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <ComboBox Name="cmbTextColor" Width="130" Margin="0,5,0,0"/>
+                <TextBox Name="txtFontSize" Width="130" Margin="0,5,0,0"/>
+            </StackPanel>
+
+        </StackPanel>
+        <Button x:Name="btnEditText" Content="Edit Text"  Margin="10" Click="btnEditText_Click"/>
+    </StackPanel>
+</Window>

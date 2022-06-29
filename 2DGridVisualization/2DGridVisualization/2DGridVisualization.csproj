@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,9 +57,58 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BidirectionalBFS.cs" />
+    <Compile Include="DrawingWindows\AddText.xaml.cs">
+      <DependentUpon>AddText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingWindows\DrawEllipse.xaml.cs">
+      <DependentUpon>DrawEllipse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingWindows\DrawPolygon.xaml.cs">
+      <DependentUpon>DrawPolygon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditWindows\EditEllipse.xaml.cs">
+      <DependentUpon>EditEllipse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditWindows\EditEntityColor.xaml.cs">
+      <DependentUpon>EditEntityColor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditWindows\EditPolygon.xaml.cs">
+      <DependentUpon>EditPolygon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditWindows\EditText.xaml.cs">
+      <DependentUpon>EditText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\LineEntity.cs" />
     <Compile Include="Models\MatrixCell.cs" />
     <Compile Include="Scale.cs" />
+    <Page Include="DrawingWindows\AddText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DrawingWindows\DrawEllipse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DrawingWindows\DrawPolygon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditWindows\EditEllipse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditWindows\EditEntityColor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditWindows\EditPolygon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditWindows\EditText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,9 +154,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DrawingWindows\" />
-    <Folder Include="EditWindows\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

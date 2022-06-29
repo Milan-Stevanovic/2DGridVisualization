@@ -1,0 +1,45 @@
+﻿<Window x:Class="_2DGridVisualization.EditWindows.EditEllipse"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2DGridVisualization.EditWindows"
+        mc:Ignorable="d"
+        Title="Edit Ellipse" Height="270" Width="235"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <StackPanel Orientation="Vertical" Background="#4A4A4A">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Ellipse Width="20" Height="10" Stroke="White"/>
+            <Label Content="Ellipse" Foreground="White"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <Label Content="Stroke Color = " Foreground="White" HorizontalContentAlignment="Right"/>
+                <Label Content="Stroke Thickness = " Foreground="White" HorizontalContentAlignment="Right"/>
+                <Label Content="Fill = " Foreground="White" HorizontalContentAlignment="Right"/>
+                <Label Content="Opacity (%) = " Foreground="White" HorizontalContentAlignment="Right"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <ComboBox Name="cmbStroke" Width="100" Margin="0,2,0,0"/>
+                <TextBox Name="txtStrokeThickness" Width="100" Margin="0,7,0,0"/>
+                <ComboBox Name="cmbFill" Width="100" Margin="0,7,0,0"/>
+                <TextBox Name="txtOpacity" Width="100" Margin="0,7,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Add text -->
+        <Label Content="Edit Text" Foreground="White" HorizontalContentAlignment="Center" Margin="0, 15, 0, 0"/>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <Label Content="Text Color = " Foreground="White" Width="112" HorizontalContentAlignment="Right"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <ComboBox Name="cmbEllipseTextColor" Width="100" Margin="0,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Button x:Name="btnEditEllipse" Content="Edit Ellipse" Margin="10" Click="btnEditEllipse_Click"/>
+    </StackPanel>
+</Window>

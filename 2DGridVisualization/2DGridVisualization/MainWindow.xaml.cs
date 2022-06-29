@@ -1,4 +1,6 @@
-﻿using _2DGridVisualization.Models;
+﻿using _2DGridVisualization.DrawingWindows;
+using _2DGridVisualization.EditWindows;
+using _2DGridVisualization.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -100,9 +102,6 @@ namespace _2DGridVisualization
                 MessageBox.Show("You must set size and load entities before drawing!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            // Clear canvas and recalculate positions
-            mainCanvas.Children.Clear();
 
             Scale.ScaleToCanvas();
             foreach (PowerEntity powerEntity in Data.allEntities.Values)
@@ -344,18 +343,215 @@ namespace _2DGridVisualization
 
         private void btnDrawEllipse_Click(object sender, RoutedEventArgs e)
         {
-
+            drawEllipse = true;
+            drawPolygon = false;
+            addText = false;
         }
 
         private void btnDrawPolygon_Click(object sender, RoutedEventArgs e)
         {
-
+            drawEllipse = false;
+            drawPolygon = true;
+            addText = false;
         }
 
         private void btnAddText_Click(object sender, RoutedEventArgs e)
         {
-
+            drawEllipse = false;
+            drawPolygon = false;
+            addText = true;
         }
         #endregion
+
+        private void mainCanvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Point startingPoint = Mouse.GetPosition(mainCanvas);
+
+            if (drawEllipse)
+            {
+                Canvas ellipseCanvas = new Canvas();
+                ellipseCanvas.Width = mainCanvas.ActualWidth;
+                ellipseCanvas.Height = mainCanvas.ActualHeight;
+
+                DrawEllipse drawEllipseWindow = new DrawEllipse();
+                drawEllipseWindow.ShowDialog();
+
+                if (ellipse != null)
+                {
+                    Canvas.SetLeft(ellipse, startingPoint.X);
+                    Canvas.SetTop(ellipse, startingPoint.Y);
+                    ellipseCanvas.Children.Add(ellipse);
+                }
+
+                if (ellipseText != null)
+                {
+                    ellipseText.TextWrapping = TextWrapping.WrapWithOverflow;
+
+                    Canvas.SetLeft(ellipseText, startingPoint.X + ellipse.Width / 3);
+                    Canvas.SetTop(ellipseText, startingPoint.Y + ellipse.Height / 3);
+                    ellipseCanvas.Children.Add(ellipseText);
+                }
+                undoRedoElement = ellipseCanvas;
+                btnUndo.IsEnabled = true;
+                cleared = false;
+
+                mainCanvas.Children.Add(ellipseCanvas);
+
+                ellipse = null;
+                ellipseText = null;
+            }
+            else if (drawPolygon)
+            {
+                polygonPoints.Add(Mouse.GetPosition(mainCanvas));
+
+                // Put dots on canvas where Polygon will be drawn
+                Ellipse dot = new Ellipse();
+                dot.Width = 4;
+                dot.Height = 4;
+                dot.Fill = Brushes.HotPink;
+
+                Canvas.SetLeft(dot, startingPoint.X - dot.Width / 2);
+                Canvas.SetTop(dot, startingPoint.Y - dot.Height / 2);
+
+                mainCanvas.Children.Add(dot);
+
+                return;
+            }
+            else if (addText)
+            {
+                AddText addTextWindow = new AddText();
+                addTextWindow.ShowDialog();
+
+                if (text != null)
+                {
+                    Canvas.SetLeft(text, startingPoint.X);
+                    Canvas.SetTop(text, startingPoint.Y);
+
+                    undoRedoElement = text;
+                    btnUndo.IsEnabled = true;
+                    cleared = false;
+
+                    mainCanvas.Children.Add(text);
+
+                    text = null;
+                }
+            }
+            else
+            {
+                if (e.Source is Polyline)
+                {
+                    EditEntityColor editEntityColorWindow = new EditEntityColor();
+                    editEntityColorWindow.ShowDialog();
+
+                    foreach (var uiElement in mainCanvas.Children.OfType<Rectangle>())
+                    {
+                        if (((PowerEntity)uiElement.Tag).MatrixRow == ((LineEntity)((Polyline)e.Source).Tag).StartMatrixRow && ((PowerEntity)uiElement.Tag).MatrixCol == ((LineEntity)((Polyline)e.Source).Tag).StartMatrixCol)
+                        {
+                            uiElement.Fill = entityColor;
+                        }
+                        if (((PowerEntity)uiElement.Tag).MatrixRow == ((LineEntity)((Polyline)e.Source).Tag).EndMatrixRow && ((PowerEntity)uiElement.Tag).MatrixCol == ((LineEntity)((Polyline)e.Source).Tag).EndMatrixCol)
+                        {
+                            uiElement.Fill = entityColor;
+                        }
+                    }
+                }
+            }
+
+            drawEllipse = false;
+            drawPolygon = false;
+            addText = false;
+        }
+
+        private void mainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (drawPolygon)
+            {
+                Canvas polygonCanvas = new Canvas();
+                polygonCanvas.Width = mainCanvas.ActualWidth;
+                polygonCanvas.Height = mainCanvas.ActualHeight;
+
+                DrawPolygon drawPolygonWindow = new DrawPolygon();
+                drawPolygonWindow.ShowDialog();
+
+                if (polygon != null && polygonPoints.Count() > 0)
+                {
+                    polygon.Points = new PointCollection(polygonPoints);
+
+                    polygonCanvas.Children.Add(polygon);
+                }
+
+                if (polygonText != null)
+                {
+                    double avgX = 0;
+                    double avgY = 0;
+
+                    foreach (var dot in polygonPoints)
+                    {
+                        avgX += dot.X;
+                        avgY += dot.Y;
+                    }
+
+                    avgX /= polygonPoints.Count();
+                    avgY /= polygonPoints.Count();
+
+                    polygonText.Width = 100;
+                    polygonText.Height = 100;
+                    polygonText.TextWrapping = TextWrapping.WrapWithOverflow;
+
+                    Canvas.SetLeft(polygonText, avgX - polygonText.Width / 2);
+                    Canvas.SetTop(polygonText, avgY);
+                    polygonCanvas.Children.Add(polygonText);
+                }
+                undoRedoElement = polygonCanvas;
+                btnUndo.IsEnabled = true;
+                cleared = false;
+
+                mainCanvas.Children.Add(polygonCanvas);
+
+                // delete preview dots
+                for (int i = 0; i < polygonPoints.Count(); i++)
+                    mainCanvas.Children.RemoveAt(mainCanvas.Children.Count - 2);
+
+                polygonPoints.Clear();
+
+                polygon = null;
+                polygonText = null;
+
+                drawPolygon = false;
+            }
+            else
+            {
+                // ======================== EDIT DRAWN OBJECTS ========================
+                if (e.Source is Ellipse)
+                {
+                    EditEllipse editEllipseWindow = new EditEllipse(LogicalTreeHelper.GetParent(e.OriginalSource as DependencyObject) as Canvas);
+                    editEllipseWindow.ShowDialog();
+                }
+                else if (e.Source is Polygon)
+                {
+                    EditPolygon editPolygonWindow = new EditPolygon(LogicalTreeHelper.GetParent(e.OriginalSource as DependencyObject) as Canvas);
+                    editPolygonWindow.ShowDialog();
+                }
+                else if (e.Source is TextBlock && LogicalTreeHelper.GetParent(e.OriginalSource as DependencyObject) is Canvas)
+                {
+                    Canvas canvas = (Canvas)LogicalTreeHelper.GetParent(e.OriginalSource as DependencyObject);
+                    if (canvas.Children[0] is Ellipse)
+                    {
+                        EditEllipse editEllipseWindow = new EditEllipse(LogicalTreeHelper.GetParent(e.OriginalSource as DependencyObject) as Canvas);
+                        editEllipseWindow.ShowDialog();
+                    }
+                    if (canvas.Children[0] is Polygon)
+                    {
+                        EditPolygon editPolygonWindow = new EditPolygon(LogicalTreeHelper.GetParent(e.OriginalSource as DependencyObject) as Canvas);
+                        editPolygonWindow.ShowDialog();
+                    }
+                }
+                else if (e.Source is Label)
+                {
+                    EditText editTextWindow = new EditText((Label)e.Source);
+                    editTextWindow.ShowDialog();
+                }
+            }
+        }
     }
 }

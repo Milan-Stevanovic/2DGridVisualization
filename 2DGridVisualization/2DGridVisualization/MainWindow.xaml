@@ -75,7 +75,7 @@
                 <TextBlock Text="500%" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10"/>
             </Grid>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Canvas x:Name="mainCanvas" Background="#303030" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Canvas x:Name="mainCanvas" Background="#303030" VerticalAlignment="Center" HorizontalAlignment="Center" MouseRightButtonDown="mainCanvas_MouseRightButtonDown" MouseLeftButtonDown="mainCanvas_MouseLeftButtonDown">
                     <Canvas.LayoutTransform>
                         <ScaleTransform ScaleX="{Binding ElementName=sliderZoom, Path=Value}"
                                         ScaleY="{Binding ElementName=sliderZoom, Path=Value}"/>
