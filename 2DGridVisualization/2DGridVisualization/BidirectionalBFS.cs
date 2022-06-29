@@ -54,14 +54,9 @@ namespace _2DGridVisualization
                     if (currentCell == destination || destinationQueue.Contains(currentCell))
                     {
                         // Path Found
-                        linesMatrix[(int)line.StartMatrixRow, (int)line.StartMatrixCol] = ' ';
-                        linesMatrix[(int)line.EndMatrixRow, (int)line.EndMatrixCol] = ' ';
-                        List<MatrixCell> jedan = ReconstructPath(source, currentCell, sourcePrevious);
-                        List<MatrixCell> dva = ReconstructPath(destination, currentCell, destinationPrevious);
-                        dva.Reverse();
-                        dva.RemoveAt(0);
-                        List<MatrixCell> ret = (List<MatrixCell>)jedan.Concat(dva).ToList();
-                        return ret;
+                        linesMatrix[line.StartMatrixRow, line.StartMatrixCol] = ' ';
+                        linesMatrix[line.EndMatrixRow, line.EndMatrixCol] = ' ';
+                        return ReconstructPath(source, currentCell, destination, sourcePrevious, destinationPrevious);
                     }
                     else
                     {
@@ -86,12 +81,7 @@ namespace _2DGridVisualization
                         // Path Found
                         linesMatrix[line.StartMatrixRow, line.StartMatrixCol] = ' ';
                         linesMatrix[line.EndMatrixRow, line.EndMatrixCol] = ' ';
-                        List<MatrixCell> jedan = ReconstructPath(source, currentCell, sourcePrevious);
-                        List<MatrixCell> dva = ReconstructPath(destination, currentCell, destinationPrevious);
-                        dva.Reverse();
-                        dva.RemoveAt(0);
-                        List<MatrixCell> ret = (List<MatrixCell>)jedan.Concat(dva).ToList();
-                        return ret;
+                        return ReconstructPath(source, currentCell, destination, sourcePrevious, destinationPrevious);
                     }
                     else
                     {
@@ -130,21 +120,25 @@ namespace _2DGridVisualization
             return neighborCells;
         }
 
-        public static List<MatrixCell> ReconstructPath(MatrixCell source, MatrixCell destination, MatrixCell[,] prev)
+        public static List<MatrixCell> ReconstructPath(MatrixCell source, MatrixCell intersection, MatrixCell destination, MatrixCell[,] sourcePrev, MatrixCell[,] destinationPrev)
         {
             List<MatrixCell> path = new List<MatrixCell>();
 
-            for (MatrixCell cell = destination; cell != null; cell = prev[cell.Row, cell.Col])
+            // Find Path from Source to Intersection Cell
+            for (MatrixCell cell = intersection; cell != null; cell = sourcePrev[cell.Row, cell.Col])
+            {
+                path.Add(cell);
+            }
+            path.RemoveAt(0); // This cell will be added below, in path from intersection to destination
+            path.Reverse();
+
+            // Find Path from Intersection to Destination
+            for (MatrixCell cell = intersection; cell != null; cell = destinationPrev[cell.Row, cell.Col])
             {
                 path.Add(cell);
             }
 
-            path.Reverse();
-
-            if (path[0].Row == source.Row && path[0].Col == source.Col)
-                return path;
-            else
-                return null;
+            return path;
         }
     }
 }

@@ -24,7 +24,29 @@ namespace _2DGridVisualization
     public partial class MainWindow : Window
     {
 
+        public bool drawEllipse = false;
+        public bool drawPolygon = false;
+        public bool addText = false;
+
+        // ============ DrawingObjects ============
+        public static Ellipse ellipse;
+        public static TextBlock ellipseText;
+        // Polygon will be displayed as canvas consisting of Polygon and Label
+        public static Polygon polygon;
+        public static PointCollection polygonPoints = new PointCollection();
+        public static TextBlock polygonText;
+        // Label AddTextx
+        public static Label text;
+
+        public static SolidColorBrush entityColor;
+
+        UIElement undoRedoElement = new UIElement();
+        List<UIElement> clearedElements = new List<UIElement>();
+        public static bool cleared = false;
+
         public static int drawnLines = 0;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -124,7 +146,8 @@ namespace _2DGridVisualization
                 
                 BFSDrawLine(line);
             }
-            Console.WriteLine("Lines drawn using BFS on canvas = " + drawnLines);
+            Console.WriteLine("[ INFO ] Lines drawn using BFS on canvas = " + drawnLines);
+            drawnLines = 0;
             
             foreach (LineEntity line in Data.lines.Values)
             {
@@ -146,14 +169,16 @@ namespace _2DGridVisualization
 
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",  ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
 
-            txtTimes.Text += String.Format("{0, -15} | {1, -10} | {2}\n", $"{mainCanvas.Width} X {mainCanvas.Height} px", $"{Data.matrixCols} X {Data.matrixRows}", elapsedTime);
+            txtTimes.Text += String.Format("{0, -14} | {1, -9} | {2}\n", $"{mainCanvas.Width} X {mainCanvas.Height} px", $"{Data.matrixCols} X {Data.matrixRows}", elapsedTime);
 
 
             btnDrawGrid.IsEnabled = false;
         }
 
+        // DRAWING ENTITIES AND LINES
+        #region DRAWING ENTITIES AND LINES
         private void DrawEntity(int row, int col)
         {
             Rectangle rect = new Rectangle();
@@ -221,6 +246,7 @@ namespace _2DGridVisualization
             }
         }
 
+
         private void DrawLine(LineEntity line)
         {
             List<MatrixCell> path = BidirectionalBFS.BidirectionalSearch(line, new char[Data.matrixRows, Data.matrixCols]);
@@ -259,8 +285,77 @@ namespace _2DGridVisualization
 
                 polyLine.Points = pointCollection;
                 mainCanvas.Children.Add(polyLine);
-                drawnLines++;
             }
         }
+
+
+        #endregion
+
+        // EDIT (undo, redo, clear)
+        #region EDIT (undo, redo, clear)
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (cleared)
+            {
+                foreach (UIElement element in clearedElements)
+                {
+                    mainCanvas.Children.Add(element);
+                }
+                clearedElements.Clear();
+                cleared = false;
+                btnRedo.IsEnabled = false;
+            }
+            else
+            {
+                mainCanvas.Children.Remove(undoRedoElement);
+                btnRedo.IsEnabled = true;
+            }
+            btnUndo.IsEnabled = false;
+        }
+
+        private void btnRedo_Click(object sender, RoutedEventArgs e)
+        {
+            btnUndo.IsEnabled = true;
+            btnRedo.IsEnabled = false;
+            mainCanvas.Children.Add(undoRedoElement);
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement element in mainCanvas.Children)
+                clearedElements.Add(element);
+
+            // reset data
+            Scale.PixelsToMatrixSize((int)mainCanvas.Width);
+
+            mainCanvas.Children.Clear();
+
+            cleared = true;
+            btnUndo.IsEnabled = true;
+            btnRedo.IsEnabled = false;
+            btnDrawGrid.IsEnabled = true;
+        }
+
+
+        #endregion
+
+        #region DRAWING (ellipse, polygon, text)
+
+
+        private void btnDrawEllipse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDrawPolygon_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAddText_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
     }
 }

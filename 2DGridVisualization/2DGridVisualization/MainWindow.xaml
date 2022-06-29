@@ -48,24 +48,24 @@
             <Line X1="10" Y1="220" X2="105" Y2="220" Stroke="#404040" StrokeThickness="2"/>
             <TextBlock Text="Edit" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,212,0,0" RenderTransformOrigin="0.513,0.917"/>
             <Line X1="145" Y1="220" X2="240" Y2="220" Stroke="#404040" StrokeThickness="2"/>
-            <Button Content="Undo" HorizontalAlignment="Left" Margin="10,233,0,0" VerticalAlignment="Top" Width="230"/>
-            <Button Content="Redo" HorizontalAlignment="Left" Margin="10,258,0,0" VerticalAlignment="Top" Width="230"/>
-            <Button Content="Clear" HorizontalAlignment="Left" Margin="10,283,0,0" VerticalAlignment="Top" Width="230"/>
+            <Button x:Name="btnUndo" Content="Undo" HorizontalAlignment="Left" Margin="10,233,0,0" VerticalAlignment="Top" Width="230" Click="btnUndo_Click"/>
+            <Button x:Name="btnRedo" Content="Redo" HorizontalAlignment="Left" Margin="10,258,0,0" VerticalAlignment="Top" Width="230" Click="btnRedo_Click"/>
+            <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="10,283,0,0" VerticalAlignment="Top" Width="230" Click="btnClear_Click"/>
 
             <!-- DRAWING -->
             <Line X1="10" Y1="330" X2="100" Y2="330" Stroke="#404040" StrokeThickness="2"/>
             <TextBlock Text="Drawing" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,320,0,0" RenderTransformOrigin="0.513,0.917"/>
             <Line X1="150" Y1="330" X2="240" Y2="330" Stroke="#404040" StrokeThickness="2"/>
-            <Button Content="Ellipse" HorizontalAlignment="Left" Margin="10,341,0,0" VerticalAlignment="Top" Width="230"/>
-            <Button Content="Polygon" HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Width="230"/>
-            <Button Content="Add Text" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" Width="230"/>
+            <Button x:Name="btnDrawEllipse" Content="Ellipse" HorizontalAlignment="Left" Margin="10,341,0,0" VerticalAlignment="Top" Width="230" Click="btnDrawEllipse_Click"/>
+            <Button x:Name="btnDrawPolygon" Content="Polygon" HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Width="230" Click="btnDrawPolygon_Click"/>
+            <Button x:Name="btnAddText" Content="Add Text" HorizontalAlignment="Left" Margin="10,391,0,0" VerticalAlignment="Top" Width="230" Click="btnAddText_Click"/>
 
 
             <!-- TIMER -->
             <Line X1="10" Y1="637" X2="105" Y2="637" Stroke="#404040" StrokeThickness="2" VerticalAlignment="Bottom" Margin="0,0,0,130"/>
             <TextBlock Text="Time" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,125" RenderTransformOrigin="0.513,0.917"/>
             <Line X1="145" Y1="637" X2="240" Y2="637" Stroke="#404040" StrokeThickness="2" VerticalAlignment="Bottom" Margin="0,0,0,130"/>
-            <TextBox x:Name="txtTimes" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="White" Background="Transparent" Height="120"/>
+            <TextBox x:Name="txtTimes" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="White" Background="Transparent" Height="120" FontFamily="Consolas"/>
         </Grid>
 
         <Grid Grid.Column="1" Background="#131313">
