@@ -17,6 +17,7 @@ namespace _2DGridVisualization
 
             // Set data
             Data.matrix = new PowerEntity[Data.matrixRows, Data.matrixCols];
+            Data.linesMatrix = new char[Data.matrixRows, Data.matrixCols];
             Data.gridCellSize = (double)widthPx / Data.matrixCols;
             Data.entitySize = Data.gridCellSize / 2F;
         }
@@ -25,8 +26,8 @@ namespace _2DGridVisualization
         {
             for (int i = 0; i < Data.allEntities.Count; i++)
             {
-                Data.allEntities.ElementAt(i).Value.MatrixRow = (int)(Data.matrixRows - (Data.matrixRows * (Data.allEntities.ElementAt(i).Value.Latitude - Data.minLatitude) / (Data.maxLatitude - Data.minLatitude)));
-                Data.allEntities.ElementAt(i).Value.MatrixCol = (int)(Data.matrixCols * (Data.allEntities.ElementAt(i).Value.Longitude - Data.minLongitude) / (Data.maxLongitude - Data.minLongitude));
+                Data.allEntities.ElementAt(i).Value.MatrixRow = Convert.ToInt32(Math.Floor(Data.matrixRows - (Data.matrixRows * (Data.allEntities.ElementAt(i).Value.Latitude - Data.minLatitude) / (Data.maxLatitude - Data.minLatitude))));
+                Data.allEntities.ElementAt(i).Value.MatrixCol = Convert.ToInt32(Math.Floor((Data.matrixCols * (Data.allEntities.ElementAt(i).Value.Longitude - Data.minLongitude) / (Data.maxLongitude - Data.minLongitude))));
             }
         }
 
@@ -56,10 +57,10 @@ namespace _2DGridVisualization
         {
             foreach (LineEntity line in Data.lines.Values)
             {
-                line.StartMatrixCol = Data.allEntities[line.FirstEnd].MatrixCol;
                 line.StartMatrixRow = Data.allEntities[line.FirstEnd].MatrixRow;
-                line.EndMatrixCol = Data.allEntities[line.SecondEnd].MatrixCol;
+                line.StartMatrixCol = Data.allEntities[line.FirstEnd].MatrixCol;
                 line.EndMatrixRow = Data.allEntities[line.SecondEnd].MatrixRow;
+                line.EndMatrixCol = Data.allEntities[line.SecondEnd].MatrixCol;
             }
         }
     }

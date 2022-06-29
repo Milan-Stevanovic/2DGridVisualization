@@ -55,7 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BidirectionalBFS.cs" />
     <Compile Include="Models\LineEntity.cs" />
+    <Compile Include="Models\MatrixCell.cs" />
     <Compile Include="Scale.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

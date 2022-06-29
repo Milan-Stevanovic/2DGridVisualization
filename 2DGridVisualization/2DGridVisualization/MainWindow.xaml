@@ -40,7 +40,7 @@
             <TextBlock Text="Grid" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0, 120, 0, 0"/>
             <Line X1="145" Y1="130" X2="240" Y2="130" Stroke="#404040" StrokeThickness="2"/>
             <Button x:Name="btnLoadGrid" Content="Load Grid" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top" Width="230" Click="btnLoadGrid_Click"/>
-            <CheckBox Foreground="White" Content="Draw Node Lines?" IsChecked="True" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Width="118"/>
+            <CheckBox x:Name="checkBoxDrawNodes" Foreground="White" Content="Draw Node Lines?" IsChecked="True" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Width="118"/>
             <Button x:Name="btnDrawGrid" Content="Draw Grid" HorizontalAlignment="Left" Margin="133,166,0,0" VerticalAlignment="Top" Width="107" Click="btnDrawGrid_Click"/>
 
 

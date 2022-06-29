@@ -13,10 +13,10 @@ namespace _2DGridVisualization.Models
         private string name;
         private long firstEnd;
         private long secondEnd;
-        private double startMatrixRow;
-        private double startMatrixCol;
-        private double endMatrixRow;
-        private double endMatrixCol;
+        private int startMatrixRow;
+        private int startMatrixCol;
+        private int endMatrixRow;
+        private int endMatrixCol;
         private bool isDrawn;
 
         public LineEntity() { }
@@ -45,25 +45,25 @@ namespace _2DGridVisualization.Models
             set { secondEnd = value; }
         }
 
-        public double StartMatrixRow
+        public int StartMatrixRow
         {
             get { return startMatrixRow; }
             set { startMatrixRow = value; }
         }
 
-        public double StartMatrixCol
+        public int StartMatrixCol
         {
             get { return startMatrixCol; }
             set { startMatrixCol = value; }
         }
 
-        public double EndMatrixRow
+        public int EndMatrixRow
         {
             get { return endMatrixRow; }
             set { endMatrixRow = value; }
         }
 
-        public double EndMatrixCol
+        public int EndMatrixCol
         {
             get { return endMatrixCol; }
             set { endMatrixCol = value; }

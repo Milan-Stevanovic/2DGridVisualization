@@ -23,6 +23,8 @@ namespace _2DGridVisualization
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static int drawnLines = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -81,8 +83,6 @@ namespace _2DGridVisualization
             mainCanvas.Children.Clear();
 
             Scale.ScaleToCanvas();
-            Scale.SetLinesStartAndEnd();
-
             foreach (PowerEntity powerEntity in Data.allEntities.Values)
             {
                 bool found = false;
@@ -93,7 +93,7 @@ namespace _2DGridVisualization
                     step++;
                 }
             }
-
+            Scale.SetLinesStartAndEnd();
 
             // Drawing Entities
             for (int row = 0; row < Data.matrixRows; row++)
@@ -109,15 +109,44 @@ namespace _2DGridVisualization
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
+
+
             // Drawing Lines
+            foreach (LineEntity line in Data.lines.Values)
+            {
+                if(checkBoxDrawNodes.IsChecked == false)
+                {
+                    if(Data.matrix[line.StartMatrixRow, line.StartMatrixCol] is NodeEntity) // check if FirstEnd is type NodeEntity
+                    {
+                        continue;
+                    }
+                }
+                
+                BFSDrawLine(line);
+            }
+            Console.WriteLine("Lines drawn using BFS on canvas = " + drawnLines);
+            
+            foreach (LineEntity line in Data.lines.Values)
+            {
+                if (!line.IsDrawn)
+                {
+                    if (checkBoxDrawNodes.IsChecked == false)
+                    {
+                        if (Data.matrix[line.StartMatrixRow, line.StartMatrixCol] is NodeEntity) // check if FirstEnd is type NodeEntity
+                        {
+                            continue;
+                        }
+                    }
+                    
+                    DrawLine(line);
+                }
+            }
+            
+
 
             stopWatch.Stop();
-            // Get the elapsed time as a TimeSpan value.
             TimeSpan ts = stopWatch.Elapsed;
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",  ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
 
             txtTimes.Text += String.Format("{0, -15} | {1, -10} | {2}\n", $"{mainCanvas.Width} X {mainCanvas.Height} px", $"{Data.matrixCols} X {Data.matrixRows}", elapsedTime);
 
@@ -157,6 +186,81 @@ namespace _2DGridVisualization
             Canvas.SetLeft(rect, col * Data.gridCellSize);
 
             mainCanvas.Children.Add(rect);
+        }
+
+        private void BFSDrawLine(LineEntity line)
+        {
+            List<MatrixCell> path = BidirectionalBFS.BidirectionalSearch(line, Data.linesMatrix);
+
+            if (path == null)
+            {
+                // Cannot reconstruct path
+                line.IsDrawn = false;
+            }
+            else
+            {
+                // FOUND PATH
+                line.IsDrawn = true;
+
+                Polyline polyLine = new Polyline();
+                polyLine.Stroke = Brushes.Orange;
+                polyLine.StrokeThickness = Data.entitySize / 4F;
+                polyLine.ToolTip = line.ToString();
+                polyLine.Tag = line;
+                PointCollection pointCollection = new PointCollection();
+
+                foreach (MatrixCell cell in path)
+                {
+                    Data.linesMatrix[cell.Row, cell.Col] = 'X';
+                    pointCollection.Add(new System.Windows.Point(cell.Col * Data.gridCellSize + Data.entitySize / 2, cell.Row * Data.gridCellSize + Data.entitySize / 2));
+                }
+
+                polyLine.Points = pointCollection;
+                mainCanvas.Children.Add(polyLine);
+                drawnLines++;
+            }
+        }
+
+        private void DrawLine(LineEntity line)
+        {
+            List<MatrixCell> path = BidirectionalBFS.BidirectionalSearch(line, new char[Data.matrixRows, Data.matrixCols]);
+
+            if (path == null)
+            {
+                // Cannot reconstruct path
+                line.IsDrawn = false;
+            }
+            else
+            {
+                // FOUND PATH
+                line.IsDrawn = true;
+
+                Polyline polyLine = new Polyline();
+                polyLine.Stroke = Brushes.GreenYellow;
+                polyLine.StrokeThickness = Data.entitySize / 2F;
+                polyLine.ToolTip = line.ToString();
+                polyLine.Tag = line;
+                PointCollection pointCollection = new PointCollection();
+
+                foreach (MatrixCell cell in path)
+                {
+                    if (Data.linesMatrix[cell.Row, cell.Col] == 'X')
+                    {
+                        Ellipse overlapDot = new Ellipse();
+                        overlapDot.Height = Data.entitySize / 2;
+                        overlapDot.Width = Data.entitySize / 2;
+                        overlapDot.Fill = Brushes.White;
+                        Canvas.SetLeft(overlapDot, cell.Col * Data.gridCellSize + Data.entitySize / 4);
+                        Canvas.SetTop(overlapDot, cell.Row * Data.gridCellSize + Data.entitySize / 4);
+                        mainCanvas.Children.Add(overlapDot);
+                    }
+                    pointCollection.Add(new System.Windows.Point(cell.Col * Data.gridCellSize + Data.entitySize / 2, cell.Row * Data.gridCellSize + Data.entitySize / 2));
+                }
+
+                polyLine.Points = pointCollection;
+                mainCanvas.Children.Add(polyLine);
+                drawnLines++;
+            }
         }
     }
 }
