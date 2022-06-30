@@ -20,9 +20,6 @@ using System.Windows.Shapes;
 
 namespace _2DGridVisualization
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
 
@@ -556,10 +553,10 @@ namespace _2DGridVisualization
 
         private void btnScreenshot_Click(object sender, RoutedEventArgs e)
         {
-            if((int)mainCanvas.ActualWidth > 0 && (int)mainCanvas.ActualHeight > 0)
+            if((int)canvasGrid.ActualWidth > 0 && (int)canvasGrid.ActualHeight > 0)
             {
-                RenderTargetBitmap rtb = new RenderTargetBitmap((int)mainCanvas.ActualWidth, (int)mainCanvas.ActualHeight, 96.0, 96.0, PixelFormats.Default);
-                rtb.Render(mainCanvas);
+                RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvasGrid.ActualWidth + 300, (int)canvasGrid.ActualHeight, 96.0, 96.0, PixelFormats.Default);
+                rtb.Render(canvasGrid);
 
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(rtb));

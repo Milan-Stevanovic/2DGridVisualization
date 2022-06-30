@@ -75,7 +75,7 @@
             <TextBox x:Name="txtTimes" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="White" Background="Transparent" Height="120" FontFamily="Consolas"/>
         </Grid>
 
-        <Grid Grid.Column="1" Background="#131313">
+        <Grid x:Name="canvasGrid" Grid.Column="1" Background="#131313">
             <Grid Panel.ZIndex="1">
                 <TextBlock Text="30%" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
                 <Slider x:Name="sliderZoom" Minimum="0.3" Maximum="5" Value="1" VerticalAlignment="Top" Margin="50, 10, 50, 0" Background="Transparent"/>
